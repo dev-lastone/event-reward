@@ -6,6 +6,9 @@ import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
 import { LocalAuthGuard } from '../guard/local-auth.guard';
 import { JwtAuthGuard } from '../guard/jwt-auth.guard';
+import { Roles } from './decorator/roles.decorator';
+import { UserRole } from '../user/entity/user.entity';
+import { RolesGuard } from '../guard/roles.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -37,7 +40,8 @@ export class AuthController {
   }
 
   @ApiBearerAuth('jwt')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN)
   @Patch('role/:userId')
   async updateUserRole(@Req() req) {
     console.log(req.user);
