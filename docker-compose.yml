@@ -1,0 +1,18 @@
+version: '3.1'
+
+services:
+  mongo_user:
+    image: mongo:7
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: mongo
+    ports:
+      - '6000:27017'
+    volumes:
+      - ./mongo/user:/data/lib
+    command: mongod --quiet --logpath /dev/null
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/user --quiet
+      interval: 5s
+      timeout: 5s
+      retries: 10
