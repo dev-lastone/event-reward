@@ -23,4 +23,8 @@ export class UserService {
       ...userRegisterDto,
     });
   }
+
+  async findOneById(id: string) {
+    return this.userModel.findOne({ id });
+  }
 }
