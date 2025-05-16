@@ -1,10 +1,11 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UserRegisterDto } from '../user/dto/user-register.dto';
 import { UserService } from '../user/user.service';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
 import { LocalAuthGuard } from '../guard/local-auth.guard';
+import { JwtAuthGuard } from '../guard/jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -32,8 +33,13 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Req() req, @Body() loginDto: LoginDto) {
-    return req.user;
+    return this.authService.login(req.user);
   }
 
-  // 유저 역할 변경
+  @ApiBearerAuth('jwt')
+  @UseGuards(JwtAuthGuard)
+  @Patch('role/:userId')
+  async updateUserRole(@Req() req) {
+    console.log(req.user);
+  }
 }

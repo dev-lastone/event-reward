@@ -12,6 +12,7 @@ import { AuthModule } from './auth/auth.module';
       isGlobal: true,
       validationSchema: Joi.object({
         MONGO_DB_USER_URL: Joi.string().required(),
+        JWT_SECRET: Joi.string().required(),
       }),
     }),
     MongooseModule.forRootAsync({
