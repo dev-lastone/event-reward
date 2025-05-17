@@ -1,0 +1,38 @@
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Document } from 'mongoose';
+
+export enum EventStatus {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+}
+
+@Schema()
+export class Event extends Document {
+  @Prop({ required: true, unique: true })
+  name: string;
+
+  @Prop()
+  description: string;
+
+  @Prop({
+    enum: EventStatus,
+    default: EventStatus.INACTIVE,
+    required: true,
+  })
+  status: EventStatus;
+
+  @Prop({
+    required: true,
+  })
+  startDate: Date;
+
+  @Prop({
+    required: true,
+  })
+  endDate: Date;
+
+  @Prop({ default: Date.now, required: true })
+  createdAt: Date;
+}
+
+export const EventSchema = SchemaFactory.createForClass(Event);
