@@ -11,7 +11,7 @@ export enum UserRole {
 @Schema()
 export class User extends Document {
   @Prop({ required: true, unique: true })
-  id: string;
+  loginId: string;
 
   @Prop({ required: true })
   password: string;
