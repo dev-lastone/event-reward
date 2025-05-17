@@ -1,7 +1,6 @@
 import { Body, Controller, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UserRegisterDto } from '../user/dto/user-register.dto';
-import { UserService } from '../user/user.service';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { LoginDto } from './dto/login.dto';
 import { LocalAuthGuard } from '../guard/local-auth.guard';
@@ -12,17 +11,14 @@ import { RolesGuard } from '../guard/roles.guard';
 
 @Controller('auth')
 export class AuthController {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly userService: UserService,
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   @ApiOperation({
     summary: '최초 관리자 등록 용도(실 사용시 내부망 전용)',
   })
   @Post('register-admin')
   async registerAdmin(@Body() userRegisterDto: UserRegisterDto) {
-    await this.userService.registerAdmin(userRegisterDto);
+    await this.authService.registerAdmin(userRegisterDto);
   }
 
   @ApiOperation({
@@ -30,7 +26,7 @@ export class AuthController {
   })
   @Post('register')
   async registerUser(@Body() userRegisterDto: UserRegisterDto) {
-    await this.userService.register(userRegisterDto);
+    await this.authService.register(userRegisterDto);
   }
 
   @UseGuards(LocalAuthGuard)
