@@ -10,7 +10,7 @@ export class EventController {
   // role operator
   @Post()
   async createEvent(@Body() createEventDto: CreateEventDto) {
-    await this.eventService.createEvent(createEventDto);
+    return await this.eventService.createEvent(createEventDto);
   }
 
   // 이벤트 전체 조회
