@@ -1,14 +1,14 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 
-export enum RewardRequestStatus {
+export enum EventRewardRequestStatus {
   PENDING = 'PENDING',
   SUCCESS = 'SUCCESS',
   FAILED = 'FAILED',
 }
 
 @Schema()
-export class RewardRequest {
+export class EventRewardRequest {
   @Prop({ required: true })
   userId: mongoose.Schema.Types.ObjectId;
 
@@ -18,8 +18,8 @@ export class RewardRequest {
   @Prop()
   rewardId?: mongoose.Schema.Types.ObjectId;
 
-  @Prop({ enum: RewardRequestStatus, default: 'PENDING' })
-  status: RewardRequestStatus;
+  @Prop({ enum: EventRewardRequestStatus, default: 'PENDING' })
+  status: EventRewardRequestStatus;
 
   @Prop()
   failureReason?: string;
@@ -28,4 +28,5 @@ export class RewardRequest {
   createdAt: Date;
 }
 
-export const RewardRequestSchema = SchemaFactory.createForClass(RewardRequest);
+export const EventRewardRequestSchema =
+  SchemaFactory.createForClass(EventRewardRequest);
