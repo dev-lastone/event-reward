@@ -4,4 +4,8 @@ import { RewardService } from './reward.service';
 @Controller('reward')
 export class RewardController {
   constructor(private readonly rewardService: RewardService) {}
+
+  // 보상 등록
+
+  // 보상 조회
 }
