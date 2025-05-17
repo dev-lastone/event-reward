@@ -8,7 +8,7 @@ export enum EventStatus {
 
 @Schema()
 export class Event extends Document {
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true })
   name: string;
 
   @Prop()
