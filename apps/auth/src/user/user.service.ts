@@ -24,7 +24,7 @@ export class UserService {
     });
   }
 
-  async findOneById(id: string) {
-    return this.userModel.findOne({ id });
+  async findOneByLoginId(loginId: string) {
+    return this.userModel.findOne({ loginId });
   }
 }
