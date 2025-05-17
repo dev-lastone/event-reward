@@ -14,4 +14,8 @@ export class EventService {
   async createEvent(createEventDto: CreateEventDto) {
     return this.eventModel.create({ ...createEventDto });
   }
+
+  async findAll() {
+    return this.eventModel.find();
+  }
 }
