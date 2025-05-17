@@ -25,10 +25,4 @@ export class EventController {
   async getEvent(@Param('eventId') eventId: string) {
     return await this.eventService.findOne(eventId);
   }
-
-  // role - user
-  // events/:eventId/reward-request
-
-  // 보상 요청 내역
-  // role - user, operator, auditor, admin
 }
