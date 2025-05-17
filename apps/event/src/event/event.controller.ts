@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
 
@@ -21,4 +21,14 @@ export class EventController {
   }
 
   // 이벤트 상세 조회
+  @Get(':eventId')
+  async getEvent(@Param('eventId') eventId: string) {
+    return await this.eventService.findOne(eventId);
+  }
+
+  // role - user
+  // events/:eventId/reward-request
+
+  // 보상 요청 내역
+  // role - user, operator, auditor, admin
 }

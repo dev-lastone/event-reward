@@ -18,4 +18,10 @@ export class EventService {
   async findAll() {
     return this.eventModel.find();
   }
+
+  async findOne(_id: string) {
+    return this.eventModel.findById({
+      _id,
+    });
+  }
 }
