@@ -1,4 +1,12 @@
-import { Body, Controller, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Param,
+  Patch,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UserRegisterDto } from '../user/dto/user-register.dto';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
@@ -8,6 +16,7 @@ import { JwtAuthGuard } from '../guard/jwt-auth.guard';
 import { Roles } from '../decorator/roles.decorator';
 import { UserRole } from '../user/entity/user.entity';
 import { RolesGuard } from '../guard/roles.guard';
+import { UpdateRoleDto } from './dto/update-role.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -38,8 +47,14 @@ export class AuthController {
   @ApiBearerAuth('jwt')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
-  @Patch('role/:userId')
-  async updateUserRole(@Req() req) {
-    console.log(req.user);
+  @Patch('role/:loginId')
+  async updateUserRole(
+    @Param('loginId') loginId: string,
+    @Body() updateRoleDto: UpdateRoleDto,
+  ) {
+    await this.authService.updateRole({
+      loginId,
+      role: updateRoleDto.role,
+    });
   }
 }
