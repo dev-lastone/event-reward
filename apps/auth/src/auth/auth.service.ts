@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { UserRegisterDto } from '../user/dto/user-register.dto';
+import { UserUpdateRoleDto } from '../user/dto/user-update-role.dto';
 
 @Injectable()
 export class AuthService {
@@ -35,5 +36,9 @@ export class AuthService {
         role: user.role,
       }),
     };
+  }
+
+  async updateRole(userUpdateRoleDto: UserUpdateRoleDto) {
+    await this.userService.updateRole(userUpdateRoleDto);
   }
 }
