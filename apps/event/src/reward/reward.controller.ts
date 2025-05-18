@@ -1,11 +1,20 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { RewardService } from './reward.service';
+import { CreateRewardDto } from './dto/create-reward.dto';
 
-@Controller('reward')
+@Controller('rewards')
 export class RewardController {
   constructor(private readonly rewardService: RewardService) {}
 
-  // 보상 등록
+  // role operator
+  @Post()
+  async createRewards(@Body() createRewardDto: CreateRewardDto) {
+    return await this.rewardService.createReward(createRewardDto);
+  }
 
-  // 보상 조회
+  // role operator
+  @Get()
+  async getRewards() {
+    return await this.rewardService.findRewards();
+  }
 }
