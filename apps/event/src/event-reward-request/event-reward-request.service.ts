@@ -46,4 +46,14 @@ export class EventRewardRequestService {
   }
 
   // TODO checkCondition
+
+  async getEventRewardRequests() {
+    return this.eventRewardRequestModel.find();
+  }
+
+  async getUserEventRewardRequests(userId: string) {
+    return this.eventRewardRequestModel.find({
+      userId,
+    });
+  }
 }
