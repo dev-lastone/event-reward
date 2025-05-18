@@ -7,6 +7,11 @@ import { LocalStrategy } from './strategy/local.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { ConfigService } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+import {
+  UserLoginHistory,
+  UserLoginHistorySchema,
+} from '../user/entity/user-login-history.entity';
 
 @Module({
   imports: [
@@ -19,6 +24,12 @@ import { ConfigService } from '@nestjs/config';
       }),
       inject: [ConfigService],
     }),
+    MongooseModule.forFeature([
+      {
+        name: UserLoginHistory.name,
+        schema: UserLoginHistorySchema,
+      },
+    ]),
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy],
