@@ -3,6 +3,7 @@ import { EventController } from './event.controller';
 import { EventService } from './event.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Event, EventSchema } from './entity/event.entity';
+import { Reward, RewardSchema } from './entity/reward.entity';
 
 @Module({
   imports: [
@@ -10,6 +11,10 @@ import { Event, EventSchema } from './entity/event.entity';
       {
         name: Event.name,
         schema: EventSchema,
+      },
+      {
+        name: Reward.name,
+        schema: RewardSchema,
       },
     ]),
   ],

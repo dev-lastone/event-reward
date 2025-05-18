@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose from 'mongoose';
 
 export enum RewardType {
   POINT = 'POINT',
@@ -8,6 +9,9 @@ export enum RewardType {
 
 @Schema()
 export class Reward {
+  @Prop({ required: true })
+  eventId: mongoose.Schema.Types.ObjectId;
+
   @Prop({ enum: RewardType, required: true })
   type: RewardType;
 

@@ -2,7 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { RewardType } from '../entity/reward.entity';
 
-export class CreateRewardDto {
+export class AddEventRewardDto {
   @ApiProperty({
     enum: RewardType,
   })
