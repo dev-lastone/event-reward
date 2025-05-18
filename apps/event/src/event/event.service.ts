@@ -3,12 +3,17 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Event } from './entity/event.entity';
 import { CreateEventDto } from './dto/create-event.dto';
+import { AddEventRewardDto } from './dto/add-event-reward.dto';
+import { Reward } from './entity/reward.entity';
 
 @Injectable()
 export class EventService {
   constructor(
     @InjectModel(Event.name)
     private readonly eventModel: Model<Event>,
+
+    @InjectModel(Reward.name)
+    private readonly rewardModel: Model<Reward>,
   ) {}
 
   async createEvent(createEventDto: CreateEventDto) {
@@ -23,5 +28,9 @@ export class EventService {
     return this.eventModel.findById({
       _id,
     });
+  }
+
+  async addEventReward(eventId: string, addEventRewardDto: AddEventRewardDto) {
+    return this.rewardModel.create({ ...addEventRewardDto, eventId });
   }
 }

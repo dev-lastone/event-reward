@@ -5,7 +5,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
 import { MongooseModule } from '@nestjs/mongoose';
 import { EventModule } from './event/event.module';
-import { RewardModule } from './reward/reward.module';
 import { EventRewardRequestModule } from './event-reward-request/event-reward-request.module';
 
 @Module({
@@ -24,7 +23,6 @@ import { EventRewardRequestModule } from './event-reward-request/event-reward-re
     }),
 
     EventModule,
-    RewardModule,
     EventRewardRequestModule,
   ],
   controllers: [AppController],
