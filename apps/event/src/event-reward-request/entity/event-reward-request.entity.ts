@@ -31,4 +31,4 @@ export class EventRewardRequest {
 export const EventRewardRequestSchema =
   SchemaFactory.createForClass(EventRewardRequest);
 
-EventRewardRequestSchema.set('collection', 'event-reward-requests');
+EventRewardRequestSchema.set('collection', 'event_reward_requests');
