@@ -22,7 +22,6 @@ export class EventController {
   // role operator
   @Get(':eventId')
   async getEvent(@Param('eventId') eventId: string) {
-    // TODO reward 까지 조회
     return await this.eventService.findOne(eventId);
   }
 
