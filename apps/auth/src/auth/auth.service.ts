@@ -4,12 +4,18 @@ import { JwtService } from '@nestjs/jwt';
 import { UserRegisterDto } from '../user/dto/user-register.dto';
 import { UserUpdateRoleDto } from '../user/dto/user-update-role.dto';
 import * as bcrypt from 'bcrypt';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { UserLoginHistory } from '../user/entity/user-login-history.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
+
+    @InjectModel(UserLoginHistory.name)
+    private readonly userLoginHistoryModel: Model<UserLoginHistory>,
   ) {}
 
   async validateUser(loginId: string, password: string) {
@@ -34,6 +40,11 @@ export class AuthService {
   }
 
   async login(user: any) {
+    await this.userLoginHistoryModel.create({
+      userId: user._id,
+      loginDate: new Date(),
+    });
+
     return {
       accessToken: this.jwtService.sign({
         sub: user._id,
