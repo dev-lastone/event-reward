@@ -15,9 +15,6 @@ export class EventRewardRequest {
   @Prop({ required: true })
   eventId: mongoose.Schema.Types.ObjectId;
 
-  @Prop()
-  rewardId?: mongoose.Schema.Types.ObjectId;
-
   @Prop({ enum: EventRewardRequestStatus, default: 'PENDING' })
   status: EventRewardRequestStatus;
 
