@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { Reward } from './reward.entity';
 
 export enum EventStatus {
   ACTIVE = 'ACTIVE',
@@ -36,6 +37,8 @@ export class Event extends Document {
 
   @Prop({ default: Date.now, required: true })
   updatedAt: Date;
+
+  rewards?: Reward[];
 }
 
 export const EventSchema = SchemaFactory.createForClass(Event);

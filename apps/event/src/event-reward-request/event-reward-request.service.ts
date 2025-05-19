@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -13,6 +14,8 @@ import { RequestEventRewardDto } from './dto/request-event-reward.dto';
 import { ConditionType, Reward } from '../event/entity/reward.entity';
 import { Event } from '../event/entity/event.entity';
 import { UserRole } from '../../../auth/src/user/entity/user.entity';
+import { ClientProxy } from '@nestjs/microservices';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class EventRewardRequestService {
@@ -22,13 +25,16 @@ export class EventRewardRequestService {
 
     @InjectModel(EventRewardRequest.name)
     private readonly eventRewardRequestModel: Model<EventRewardRequest>,
+
+    @Inject('AUTH_SERVICE')
+    private readonly authMsaService: ClientProxy,
   ) {}
 
   async requestEventReward(requestEventRewardDto: RequestEventRewardDto) {
     const { userId, eventId, rewardId } = requestEventRewardDto;
 
     const events = await this.eventModel
-      .aggregate([
+      .aggregate<Event>([
         {
           $match: { _id: new Types.ObjectId(eventId) },
         },
@@ -49,11 +55,12 @@ export class EventRewardRequestService {
       .exec();
 
     const event = events[0];
-    const reward = event?.rewards[0];
 
     if (!event) {
       throw new NotFoundException('이벤트를 찾을 수 없습니다.');
     }
+
+    const reward = event.rewards[0];
 
     if (!reward) {
       throw new NotFoundException('보상을 찾을 수 없습니다.');
@@ -73,8 +80,8 @@ export class EventRewardRequestService {
       throw new BadRequestException('이미 요청한 이벤트 보상입니다.');
     }
 
-    if (reward.isAuth) {
-      const isEligible = this.#checkCondition(userId, reward);
+    if (reward.isAuto) {
+      const isEligible = await this.#checkCondition(userId, reward);
 
       await this.eventRewardRequestModel.create({
         userId,
@@ -97,6 +104,15 @@ export class EventRewardRequestService {
 
   async #checkCondition(userId: string, reward: Reward) {
     const { conditionType, conditionParams } = reward;
+
+    const userLoginHistories = await lastValueFrom(
+      this.authMsaService.send(
+        {
+          cmd: 'get-user-histories',
+        },
+        { userId },
+      ),
+    );
 
     if (conditionType === ConditionType.COME_BACK) {
       // TODO: 복귀 유저 조건 체크 로직 구현
