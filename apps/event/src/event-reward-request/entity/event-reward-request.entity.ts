@@ -9,13 +9,13 @@ export enum EventRewardRequestStatus {
 
 @Schema()
 export class EventRewardRequest {
-  @Prop({ required: true })
+  @Prop({ required: true, index: true })
   userId: mongoose.Schema.Types.ObjectId;
 
-  @Prop({ required: true })
+  @Prop({ required: true, index: true })
   eventId: mongoose.Schema.Types.ObjectId;
 
-  @Prop({ required: true })
+  @Prop({ required: true, index: true })
   rewardId: mongoose.Schema.Types.ObjectId;
 
   @Prop({ enum: EventRewardRequestStatus, default: 'PENDING' })

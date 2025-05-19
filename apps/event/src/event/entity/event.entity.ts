@@ -24,11 +24,13 @@ export class Event extends Document {
 
   @Prop({
     required: true,
+    index: true,
   })
   startDate: Date;
 
   @Prop({
     required: true,
+    index: true,
   })
   endDate: Date;
 

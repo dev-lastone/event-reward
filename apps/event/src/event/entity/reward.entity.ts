@@ -16,7 +16,7 @@ export enum ConditionType {
 
 @Schema()
 export class Reward {
-  @Prop({ required: true })
+  @Prop({ required: true, index: true })
   eventId: mongoose.Schema.Types.ObjectId;
 
   @Prop({ enum: RewardType, required: true })
