@@ -28,8 +28,8 @@ describe('ContinuousLoginDaysService', () => {
     expect(service).toBeDefined();
   });
 
-  it('fail', () => {
-    const userLoginHistories = [{ date: '2023-10-01' }, { date: '2023-10-02' }];
+  it('출석일 부족', () => {
+    const userLoginHistories = [new Date('2023-10-01'), new Date('2023-10-02')];
 
     const result = service.check(userLoginHistories, { days: 3 });
 
@@ -38,9 +38,9 @@ describe('ContinuousLoginDaysService', () => {
 
   it('연속되지 않아 실패', () => {
     const userLoginHistories = [
-      { date: '2023-10-01' },
-      { date: '2023-10-02' },
-      { date: '2023-10-04' },
+      new Date('2023-10-01'),
+      new Date('2023-10-02'),
+      new Date('2023-10-04'),
     ];
     const result = service.check(userLoginHistories, { days: 3 });
 
@@ -49,9 +49,9 @@ describe('ContinuousLoginDaysService', () => {
 
   it('success', () => {
     const userLoginHistories = [
-      { date: '2023-10-01' },
-      { date: '2023-10-02' },
-      { date: '2023-10-03' },
+      new Date('2023-10-01'),
+      new Date('2023-10-02'),
+      new Date('2023-10-03'),
     ];
     const result = service.check(userLoginHistories, { days: 3 });
 
