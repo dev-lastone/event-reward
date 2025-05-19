@@ -27,7 +27,7 @@ export class EventRewardRequestController {
     @Body() requestEventRewardDto: RequestEventRewardDto,
   ) {
     return await this.eventRewardRequestService.requestEventReward(
-      user._id,
+      user.id,
       requestEventRewardDto,
     );
   }

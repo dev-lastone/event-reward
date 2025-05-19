@@ -106,7 +106,7 @@ export class EventRewardRequestService {
   async getEventRewardRequests(jwtPayload: JwtPayload) {
     if (jwtPayload.role === UserRole.USER) {
       return this.eventRewardRequestModel.find({
-        userId: jwtPayload._id,
+        userId: jwtPayload.id,
       });
     }
 
