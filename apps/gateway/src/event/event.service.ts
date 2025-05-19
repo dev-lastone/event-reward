@@ -57,6 +57,7 @@ export class EventService {
       {
         ...dto,
         eventId,
+        conditionParams: JSON.parse(dto.conditionParams),
       },
     );
   }
