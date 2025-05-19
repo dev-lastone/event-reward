@@ -7,6 +7,7 @@ import {
   EventRewardRequest,
   EventRewardRequestSchema,
 } from './entity/event-reward-request.entity';
+import { EventModule } from '../event/event.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import {
         schema: EventRewardRequestSchema,
       },
     ]),
+    EventModule,
   ],
   controllers: [EventRewardRequestController],
   providers: [EventRewardRequestService],
