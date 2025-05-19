@@ -3,11 +3,12 @@ import { RegisterDto } from './dto/register.dto';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { UpdateAuthRoleDto } from './dto/update-auth-role.dto';
+import { MSA_SERVICE } from 'common/const/msa-service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject('AUTH_SERVICE')
+    @Inject(MSA_SERVICE.AUTH)
     private readonly authMsaService: ClientProxy,
   ) {}
 

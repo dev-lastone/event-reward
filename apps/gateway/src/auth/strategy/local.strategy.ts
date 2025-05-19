@@ -3,11 +3,12 @@ import { Strategy } from 'passport-local';
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
+import { MSA_SERVICE } from 'common/const/msa-service';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(
-    @Inject('AUTH_SERVICE')
+    @Inject(MSA_SERVICE.AUTH)
     private readonly authMsaService: ClientProxy,
   ) {
     super();

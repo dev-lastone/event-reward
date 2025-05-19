@@ -3,11 +3,12 @@ import { ICheckCondition } from './check-condition.service';
 import { lastValueFrom } from 'rxjs';
 import { ClientProxy } from '@nestjs/microservices';
 import { Event } from '../../event/entity/event.entity';
+import { MSA_SERVICE } from 'common/const/msa-service';
 
 @Injectable()
 export class ContinuousLoginDaysService implements ICheckCondition {
   constructor(
-    @Inject('AUTH_SERVICE')
+    @Inject(MSA_SERVICE.AUTH)
     private readonly authMsaService: ClientProxy,
   ) {}
 

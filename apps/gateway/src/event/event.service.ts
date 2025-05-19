@@ -3,11 +3,12 @@ import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { CreateEventDto } from '../../../event/src/event/dto/create-event.dto';
 import { AddEventRewardDto } from './dto/add-event-reward.dto';
+import { MSA_SERVICE } from 'common/const/msa-service';
 
 @Injectable()
 export class EventService {
   constructor(
-    @Inject('EVENT_SERVICE')
+    @Inject(MSA_SERVICE.EVENT)
     private readonly eventMsaService: ClientProxy,
   ) {}
 
