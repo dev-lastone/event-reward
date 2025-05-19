@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
-import { RequestEventRewardDto } from '../../../event/src/event-reward-request/dto/request-event-reward.dto';
+import { RequestEventRewardDto } from './dto/request-event-reward.dto';
 
 @Injectable()
 export class EventRewardRequestService {
@@ -10,14 +10,16 @@ export class EventRewardRequestService {
     private readonly eventMsaService: ClientProxy,
   ) {}
 
-  async requestEventReward(requestEventRewardDto: RequestEventRewardDto) {
-    // message?
+  async requestEventReward(
+    userId: string,
+    requestEventRewardDto: RequestEventRewardDto,
+  ) {
     return await lastValueFrom(
       this.eventMsaService.send(
         {
           cmd: 'request-event-reward',
         },
-        requestEventRewardDto,
+        { ...requestEventRewardDto, userId },
       ),
     );
   }
