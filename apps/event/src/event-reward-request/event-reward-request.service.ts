@@ -13,6 +13,7 @@ import { RequestEventRewardDto } from './dto/request-event-reward.dto';
 import { Event } from '../event/entity/event.entity';
 import { UserRole } from '../../../auth/src/user/entity/user.entity';
 import { CheckConditionService } from './check-condition/check-condition.service';
+import { JwtPayload } from 'common/type/jwt-payload';
 
 @Injectable()
 export class EventRewardRequestService {
@@ -102,10 +103,10 @@ export class EventRewardRequestService {
     }
   }
 
-  async getEventRewardRequests(jwtPayload: any) {
+  async getEventRewardRequests(jwtPayload: JwtPayload) {
     if (jwtPayload.role === UserRole.USER) {
       return this.eventRewardRequestModel.find({
-        userId: jwtPayload.id,
+        userId: jwtPayload._id,
       });
     }
 
