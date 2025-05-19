@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
 import { ClientsModule, Transport } from '@nestjs/microservices';
@@ -57,7 +55,5 @@ import { EventRewardRequestModule } from './event-reward-request/event-reward-re
     EventModule,
     EventRewardRequestModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
