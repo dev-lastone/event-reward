@@ -1,9 +1,10 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiOperation } from '@nestjs/swagger';
 import { RegisterDto } from './dto/register.dto';
 import { LocalAuthGuard } from '../../../auth/src/guard/local-auth.guard';
 import { LoginDto } from '../../../auth/src/auth/dto/login.dto';
+import { UpdateAuthRoleDto } from './dto/update-auth-role.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -29,5 +30,13 @@ export class AuthController {
   @Post('login')
   async login(@Req() req, @Body() loginDto: LoginDto) {
     return req.user;
+  }
+
+  @Post('role/:username')
+  async updateRole(
+    @Param('username') username: string,
+    @Body() dto: UpdateAuthRoleDto,
+  ) {
+    await this.authService.updateAuthRole(username, dto);
   }
 }
