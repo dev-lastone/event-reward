@@ -4,6 +4,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { UpdateAuthRoleDto } from './dto/update-auth-role.dto';
 import { MSA_SERVICE } from 'common/const/msa-service';
+import { MESSAGE_CMD } from 'common/const/message-cmd';
 
 @Injectable()
 export class AuthService {
@@ -16,7 +17,7 @@ export class AuthService {
     const res = await lastValueFrom(
       this.authMsaService.send(
         {
-          cmd: 'register-admin',
+          cmd: MESSAGE_CMD.REGISTER_ADMIN,
         },
         { ...registerDto },
       ),
@@ -28,7 +29,7 @@ export class AuthService {
     const res = await lastValueFrom(
       this.authMsaService.send(
         {
-          cmd: 'register-user',
+          cmd: MESSAGE_CMD.REGISTER_USER,
         },
         { ...registerDto },
       ),
@@ -40,7 +41,7 @@ export class AuthService {
     const res = await lastValueFrom(
       this.authMsaService.send(
         {
-          cmd: 'login',
+          cmd: MESSAGE_CMD.LOGIN,
         },
         user,
       ),
@@ -52,7 +53,7 @@ export class AuthService {
     const res = await lastValueFrom(
       this.authMsaService.send(
         {
-          cmd: 'update-auth-role',
+          cmd: MESSAGE_CMD.UPDATE_AUTH_ROLE,
         },
         {
           username,
