@@ -22,6 +22,9 @@ export class User extends Document {
     required: true,
   })
   role: UserRole;
+
+  @Prop({ required: true })
+  createdAt: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

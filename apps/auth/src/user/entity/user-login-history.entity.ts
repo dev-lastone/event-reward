@@ -7,7 +7,7 @@ export class UserLoginHistory extends Document {
   userId: string;
 
   @Prop({ required: true })
-  loginDate: Date;
+  createdAt: Date;
 }
 
 export const UserLoginHistorySchema =
