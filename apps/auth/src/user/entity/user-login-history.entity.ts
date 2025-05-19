@@ -6,7 +6,7 @@ export class UserLoginHistory extends Document {
   @Prop({ required: true })
   userId: string;
 
-  @Prop({ required: true })
+  @Prop({ default: Date.now, required: true })
   createdAt: Date;
 }
 
