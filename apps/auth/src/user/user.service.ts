@@ -31,20 +31,20 @@ export class UserService {
     );
 
     return this.userModel.create({
-      loginId: userRegisterDto.loginId,
+      username: userRegisterDto.username,
       password: hashedPassword,
       role: role || UserRole.USER,
     });
   }
 
-  async findOneByLoginId(loginId: string) {
-    return this.userModel.findOne({ loginId });
+  async findOneByUsername(username: string) {
+    return this.userModel.findOne({ username });
   }
 
   async updateRole(userUpdateRoleDto: UserUpdateRoleDto) {
     await this.userModel.updateOne(
       {
-        loginId: userUpdateRoleDto.loginId,
+        username: userUpdateRoleDto.username,
       },
       {
         role: userUpdateRoleDto.role,

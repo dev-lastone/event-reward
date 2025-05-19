@@ -4,7 +4,7 @@ import { UserRole } from '../entity/user.entity';
 export class UserUpdateRoleDto {
   @IsString()
   @IsNotEmpty()
-  loginId: string;
+  username: string;
 
   @IsEnum(UserRole)
   @IsNotEmpty()
