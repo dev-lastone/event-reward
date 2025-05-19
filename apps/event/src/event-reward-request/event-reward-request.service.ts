@@ -100,12 +100,16 @@ export class EventRewardRequestService {
 
     if (conditionType === ConditionType.COME_BACK) {
       // TODO: 복귀 유저 조건 체크 로직 구현
+      // user histories
     } else if (conditionType === ConditionType.LOGIN_DAYS) {
       // TODO: 이벤트 기간 로그인 횟수 조건 체크 로직 구현
+      // user histories
     } else if (conditionType === ConditionType.CONTINUOUS_LOGIN_DAYS) {
       // TODO : 최대 연속 출석 체크 조건 체크 로직 구현
+      // user histories
     } else if (conditionType === ConditionType.FRIEND_INVITATION) {
       // TODO : 친구 초대 조건 체크 로직 구현
+      // user invitations
     }
 
     return false;
