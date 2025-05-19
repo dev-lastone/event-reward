@@ -18,13 +18,23 @@ export class AuthService {
     private readonly userLoginHistoryModel: Model<UserLoginHistory>,
   ) {}
 
-  async validateUser(loginId: string, password: string) {
-    const user = await this.userService.findOneByLoginId(loginId);
+  async login(username: string, password: string) {
+    const user = await this.userService.findOneByUsername(username);
 
     if (user) {
       const isPassed = await bcrypt.compare(password, user.password);
       if (isPassed) {
-        return user;
+        await this.userLoginHistoryModel.create({
+          userId: user._id,
+          loginDate: new Date(),
+        });
+
+        return {
+          accessToken: this.jwtService.sign({
+            sub: user._id,
+            role: user.role,
+          }),
+        };
       }
     }
 
@@ -37,20 +47,6 @@ export class AuthService {
 
   async register(userRegisterDto: UserRegisterDto) {
     await this.userService.register(userRegisterDto);
-  }
-
-  async login(user: any) {
-    await this.userLoginHistoryModel.create({
-      userId: user._id,
-      loginDate: new Date(),
-    });
-
-    return {
-      accessToken: this.jwtService.sign({
-        sub: user._id,
-        role: user.role,
-      }),
-    };
   }
 
   async updateRole(userUpdateRoleDto: UserUpdateRoleDto) {

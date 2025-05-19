@@ -5,7 +5,7 @@ export class UserRegisterDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  loginId: string;
+  username: string;
 
   @ApiProperty()
   @IsString()

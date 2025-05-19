@@ -4,14 +4,11 @@ import {
   Param,
   Patch,
   Post,
-  Req,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UserRegisterDto } from '../user/dto/user-register.dto';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
-import { LoginDto } from './dto/login.dto';
-import { LocalAuthGuard } from '../guard/local-auth.guard';
 import { JwtAuthGuard } from '../guard/jwt-auth.guard';
 import { Roles } from '../decorator/roles.decorator';
 import { UserRole } from '../user/entity/user.entity';
@@ -57,22 +54,26 @@ export class AuthController {
     return true;
   }
 
-  @UseGuards(LocalAuthGuard)
-  @Post('login')
-  async login(@Req() req, @Body() loginDto: LoginDto) {
-    return this.authService.login(req.user);
+  @MessagePattern({
+    cmd: 'login',
+  })
+  async msgLogin(@Payload() userRegisterDto: UserRegisterDto) {
+    return await this.authService.login(
+      userRegisterDto.username,
+      userRegisterDto.password,
+    );
   }
 
   @ApiBearerAuth('jwt')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
-  @Patch('role/:loginId')
+  @Patch('role/:username')
   async updateUserRole(
-    @Param('loginId') loginId: string,
+    @Param('username') username: string,
     @Body() updateRoleDto: UpdateRoleDto,
   ) {
     await this.authService.updateRole({
-      loginId,
+      username,
       role: updateRoleDto.role,
     });
   }

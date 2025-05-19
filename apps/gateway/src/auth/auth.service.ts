@@ -7,12 +7,12 @@ import { lastValueFrom } from 'rxjs';
 export class AuthService {
   constructor(
     @Inject('AUTH_SERVICE')
-    private readonly userMsaService: ClientProxy,
+    private readonly authMsaService: ClientProxy,
   ) {}
 
   async registerAdmin(registerDto: RegisterDto) {
     const res = await lastValueFrom(
-      this.userMsaService.send(
+      this.authMsaService.send(
         {
           cmd: 'register-admin',
         },
@@ -24,11 +24,23 @@ export class AuthService {
 
   async registerUser(registerDto: RegisterDto) {
     const res = await lastValueFrom(
-      this.userMsaService.send(
+      this.authMsaService.send(
         {
           cmd: 'register-user',
         },
         { ...registerDto },
+      ),
+    );
+    console.log(res);
+  }
+
+  async login(user: any) {
+    const res = await lastValueFrom(
+      this.authMsaService.send(
+        {
+          cmd: 'login',
+        },
+        user,
       ),
     );
     console.log(res);
