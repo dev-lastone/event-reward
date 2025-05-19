@@ -13,7 +13,7 @@ export class ContinuousLoginDaysService implements ICheckCondition {
   ) {}
 
   async getData(userId: string, event: Event): Promise<Date[]> {
-    return await lastValueFrom(
+    const result = await lastValueFrom(
       this.authMsaService.send(
         {
           cmd: 'get-user-login-dates-by-period',
@@ -21,6 +21,7 @@ export class ContinuousLoginDaysService implements ICheckCondition {
         { userId, startDate: event.startDate, endDate: event.endDate },
       ),
     );
+    return result.data;
   }
 
   check(

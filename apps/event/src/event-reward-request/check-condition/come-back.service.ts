@@ -12,9 +12,10 @@ export class ComeBackService implements ICheckCondition {
   ) {}
 
   async getData(userId: string): Promise<Date> {
-    return await lastValueFrom(
+    const result = await lastValueFrom(
       this.authMsaService.send({ cmd: 'get-user-last-login-date' }, { userId }),
     );
+    return result.data;
   }
 
   check(lastLoginDate: Date, conditionParams: { days: number }): boolean {

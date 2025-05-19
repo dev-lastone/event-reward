@@ -72,20 +72,36 @@ export class UserService {
   }
 
   async getUserLoginDatesByPeriod(dto: GetUserLoginDatesByPeriodDto) {
-    return this.userLoginHistoryModel.find({
-      userId: dto.userId,
-      createdAt: {
-        $gte: dto.startDate,
-        $lte: dto.endDate,
-      },
-    });
+    const result = await this.userLoginHistoryModel
+      .find(
+        {
+          userId: dto.userId,
+          createdAt: {
+            $gte: dto.startDate,
+            $lte: dto.endDate,
+          },
+        },
+        {
+          createdAt: 1,
+        },
+      )
+      .exec();
+
+    return result.map((item) => item.createdAt);
   }
 
   async getUserLastLoginDateDto(dto: GetUserLastLoginDateDto) {
-    return this.userLoginHistoryModel
-      .findOne({
+    const result = await this.userLoginHistoryModel.findOne(
+      {
         userId: dto.userId,
-      })
-      .sort({ _id: -1 });
+      },
+      {
+        createdAt: 1,
+      },
+      {
+        sort: { _id: -1 },
+      },
+    );
+    return result.createdAt;
   }
 }
