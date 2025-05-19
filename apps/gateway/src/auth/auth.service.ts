@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { RegisterDto } from './dto/register.dto';
 import { ClientProxy } from '@nestjs/microservices';
-import { lastValueFrom } from 'rxjs';
 import { UpdateAuthRoleDto } from './dto/update-auth-role.dto';
 import { MSA_SERVICE } from 'common/const/msa-service';
 import { MESSAGE_CMD } from 'common/const/message-cmd';
+import { sendMsaMessage } from 'common/util/send-msa-message';
 
 @Injectable()
 export class AuthService {
@@ -14,53 +14,29 @@ export class AuthService {
   ) {}
 
   async registerAdmin(registerDto: RegisterDto) {
-    const res = await lastValueFrom(
-      this.authMsaService.send(
-        {
-          cmd: MESSAGE_CMD.REGISTER_ADMIN,
-        },
-        { ...registerDto },
-      ),
+    return await sendMsaMessage(
+      this.authMsaService,
+      MESSAGE_CMD.REGISTER_ADMIN,
+      registerDto,
     );
-    console.log(res);
   }
 
   async registerUser(registerDto: RegisterDto) {
-    const res = await lastValueFrom(
-      this.authMsaService.send(
-        {
-          cmd: MESSAGE_CMD.REGISTER_USER,
-        },
-        { ...registerDto },
-      ),
+    return await sendMsaMessage(
+      this.authMsaService,
+      MESSAGE_CMD.REGISTER_USER,
+      registerDto,
     );
-    console.log(res);
   }
 
-  async login(user: any) {
-    const res = await lastValueFrom(
-      this.authMsaService.send(
-        {
-          cmd: MESSAGE_CMD.LOGIN,
-        },
-        user,
-      ),
+  async updateAuthRole(userId: string, dto: UpdateAuthRoleDto) {
+    return await sendMsaMessage(
+      this.authMsaService,
+      MESSAGE_CMD.UPDATE_AUTH_ROLE,
+      {
+        userId,
+        role: dto.role,
+      },
     );
-    console.log(res);
-  }
-
-  async updateAuthRole(username: string, dto: UpdateAuthRoleDto) {
-    const res = await lastValueFrom(
-      this.authMsaService.send(
-        {
-          cmd: MESSAGE_CMD.UPDATE_AUTH_ROLE,
-        },
-        {
-          username,
-          role: dto.role,
-        },
-      ),
-    );
-    console.log(res);
   }
 }

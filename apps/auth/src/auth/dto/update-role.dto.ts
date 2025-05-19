@@ -5,7 +5,7 @@ import { ApiProperty } from '@nestjs/swagger';
 export class UpdateRoleDto {
   @IsString()
   @IsNotEmpty()
-  username: string;
+  userId: string;
 
   @IsEnum(UserRole)
   @IsNotEmpty()

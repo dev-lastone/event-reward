@@ -20,7 +20,7 @@ export class AuthController {
   })
   @Post('register-admin')
   async registerAdmin(@Body() registerDto: RegisterDto) {
-    await this.authService.registerAdmin(registerDto);
+    return await this.authService.registerAdmin(registerDto);
   }
 
   @UseGuards(LocalAuthGuard)
@@ -33,7 +33,7 @@ export class AuthController {
   }
 
   @ApiOperation({
-    summary: '유저 등록',
+    summary: '회원가입',
   })
   @Post('register')
   async registerUser(@Body() registerDto: RegisterDto) {
@@ -46,11 +46,11 @@ export class AuthController {
   @ApiBearerAuth('jwt')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserRole.ADMIN)
-  @Post('role/:username')
+  @Post('role/:userId')
   async updateRole(
-    @Param('username') username: string,
+    @Param('userId') userId: string,
     @Body() dto: UpdateAuthRoleDto,
   ) {
-    await this.authService.updateAuthRole(username, dto);
+    await this.authService.updateAuthRole(userId, dto);
   }
 }
