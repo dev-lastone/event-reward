@@ -8,6 +8,7 @@ import {
   EventRewardRequestSchema,
 } from './entity/event-reward-request.entity';
 import { EventModule } from '../event/event.module';
+import { CheckConditionModule } from './check-condition/check-condition.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { EventModule } from '../event/event.module';
       },
     ]),
     EventModule,
+    CheckConditionModule,
   ],
   controllers: [EventRewardRequestController],
   providers: [EventRewardRequestService],

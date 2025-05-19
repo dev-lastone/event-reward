@@ -1,6 +1,5 @@
 import {
   BadRequestException,
-  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -11,11 +10,9 @@ import {
 } from './entity/event-reward-request.entity';
 import { Model, Types } from 'mongoose';
 import { RequestEventRewardDto } from './dto/request-event-reward.dto';
-import { ConditionType, Reward } from '../event/entity/reward.entity';
 import { Event } from '../event/entity/event.entity';
 import { UserRole } from '../../../auth/src/user/entity/user.entity';
-import { ClientProxy } from '@nestjs/microservices';
-import { lastValueFrom } from 'rxjs';
+import { CheckConditionService } from './check-condition/check-condition.service';
 
 @Injectable()
 export class EventRewardRequestService {
@@ -26,8 +23,7 @@ export class EventRewardRequestService {
     @InjectModel(EventRewardRequest.name)
     private readonly eventRewardRequestModel: Model<EventRewardRequest>,
 
-    @Inject('AUTH_SERVICE')
-    private readonly authMsaService: ClientProxy,
+    private readonly checkConditionService: CheckConditionService,
   ) {}
 
   async requestEventReward(requestEventRewardDto: RequestEventRewardDto) {
@@ -81,7 +77,7 @@ export class EventRewardRequestService {
     }
 
     if (reward.isAuto) {
-      const isEligible = await this.#checkCondition(userId, reward);
+      const isEligible = await this.checkConditionService.check(userId, reward);
 
       await this.eventRewardRequestModel.create({
         userId,
@@ -100,35 +96,6 @@ export class EventRewardRequestService {
         status: EventRewardRequestStatus.PENDING,
       });
     }
-  }
-
-  async #checkCondition(userId: string, reward: Reward) {
-    const { conditionType, conditionParams } = reward;
-
-    const userLoginHistories = await lastValueFrom(
-      this.authMsaService.send(
-        {
-          cmd: 'get-user-histories',
-        },
-        { userId },
-      ),
-    );
-
-    if (conditionType === ConditionType.COME_BACK) {
-      // TODO: 복귀 유저 조건 체크 로직 구현
-      // user histories
-    } else if (conditionType === ConditionType.LOGIN_DAYS) {
-      // TODO: 이벤트 기간 로그인 횟수 조건 체크 로직 구현
-      // user histories
-    } else if (conditionType === ConditionType.CONTINUOUS_LOGIN_DAYS) {
-      // TODO : 최대 연속 출석 체크 조건 체크 로직 구현
-      // user histories
-    } else if (conditionType === ConditionType.FRIEND_INVITATION) {
-      // TODO : 친구 초대 조건 체크 로직 구현
-      // user invitations
-    }
-
-    return false;
   }
 
   async getEventRewardRequests(jwtPayload: any) {
