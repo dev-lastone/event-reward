@@ -6,6 +6,7 @@ import { UserRegisterDto } from './dto/user-register.dto';
 import { UserUpdateRoleDto } from './dto/user-update-role.dto';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
+import { UserLoginHistory } from './entity/user-login-history.entity';
 
 @Injectable()
 export class UserService {
@@ -14,6 +15,9 @@ export class UserService {
 
     @InjectModel(User.name)
     private readonly userModel: Model<User>,
+
+    @InjectModel(UserLoginHistory.name)
+    private readonly userLoginHistoryModel: Model<UserLoginHistory>,
   ) {}
 
   async registerAdmin(userRegisterDto: UserRegisterDto) {
@@ -50,5 +54,11 @@ export class UserService {
         role: userUpdateRoleDto.role,
       },
     );
+  }
+
+  async getUserHistories(userId: string) {
+    return this.userLoginHistoryModel.find({
+      userId,
+    });
   }
 }
