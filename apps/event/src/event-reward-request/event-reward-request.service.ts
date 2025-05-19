@@ -12,6 +12,7 @@ import { Model, Types } from 'mongoose';
 import { RequestEventRewardDto } from './dto/request-event-reward.dto';
 import { ConditionType, Reward } from '../event/entity/reward.entity';
 import { Event } from '../event/entity/event.entity';
+import { UserRole } from '../../../auth/src/user/entity/user.entity';
 
 @Injectable()
 export class EventRewardRequestService {
@@ -110,13 +111,13 @@ export class EventRewardRequestService {
     return false;
   }
 
-  async getEventRewardRequests() {
-    return this.eventRewardRequestModel.find();
-  }
+  async getEventRewardRequests(jwtPayload: any) {
+    if (jwtPayload.role === UserRole.USER) {
+      return this.eventRewardRequestModel.find({
+        userId: jwtPayload.id,
+      });
+    }
 
-  async getUserEventRewardRequests(userId: string) {
-    return this.eventRewardRequestModel.find({
-      userId,
-    });
+    return this.eventRewardRequestModel.find();
   }
 }
