@@ -1,18 +1,7 @@
-import {
-  Body,
-  Controller,
-  Param,
-  Patch,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Param, Patch, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UserRegisterDto } from '../user/dto/user-register.dto';
-import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../guard/jwt-auth.guard';
-import { Roles } from '../decorator/roles.decorator';
-import { UserRole } from '../user/entity/user.entity';
-import { RolesGuard } from '../guard/roles.guard';
+import { ApiOperation } from '@nestjs/swagger';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 
@@ -25,7 +14,9 @@ export class AuthController {
   })
   @Post('register-admin')
   async registerAdmin(@Body() userRegisterDto: UserRegisterDto) {
-    return await this.authService.registerAdmin(userRegisterDto);
+    await this.authService.registerAdmin(userRegisterDto);
+
+    return true;
   }
 
   @MessagePattern({
@@ -64,9 +55,6 @@ export class AuthController {
     );
   }
 
-  @ApiBearerAuth('jwt')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.ADMIN)
   @Patch('role/:username')
   async updateUserRole(
     @Param('username') username: string,
