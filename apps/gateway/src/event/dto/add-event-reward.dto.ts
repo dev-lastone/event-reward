@@ -21,6 +21,7 @@ export class AddEventRewardDto {
 
   @ApiProperty({
     default: true,
+    description: '자동 지급(검증) 여부',
   })
   @IsBoolean()
   @IsNotEmpty()
@@ -33,10 +34,16 @@ export class AddEventRewardDto {
   @IsNotEmpty()
   conditionType: ConditionType;
 
-  @ApiPropertyOptional()
-  conditionParams: any;
+  @ApiPropertyOptional({
+    example: '{ "days": 3 }',
+    description: '조건 파라미터',
+  })
+  @IsString()
+  conditionParams?: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    example: '보상',
+  })
   @IsString()
   @IsNotEmpty()
   value: string;
@@ -48,7 +55,9 @@ export class AddEventRewardDto {
   @IsNotEmpty()
   quantity: number;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({
+    example: '보상 설명',
+  })
   @IsString()
   description?: string;
 }

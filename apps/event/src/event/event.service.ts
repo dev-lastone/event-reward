@@ -20,11 +20,11 @@ export class EventService {
     return this.eventModel.create({ ...createEventDto });
   }
 
-  async findAll() {
+  async getEvents() {
     return this.eventModel.find();
   }
 
-  async findOne(_id: string) {
+  async getEvent(_id: string) {
     const result = await this.eventModel
       .aggregate([
         {
@@ -45,6 +45,7 @@ export class EventService {
   }
 
   async addEventReward(eventId: string, addEventRewardDto: AddEventRewardDto) {
+    console.log(addEventRewardDto);
     return this.rewardModel.create({ ...addEventRewardDto, eventId });
   }
 }

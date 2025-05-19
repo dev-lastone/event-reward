@@ -1,10 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { lastValueFrom } from 'rxjs';
 import { CreateEventDto } from '../../../event/src/event/dto/create-event.dto';
 import { AddEventRewardDto } from './dto/add-event-reward.dto';
 import { MSA_SERVICE } from 'common/const/msa-service';
 import { MESSAGE_CMD } from 'common/const/message-cmd';
+import { sendMsaMessage } from 'common/util/send-msa-message';
 
 @Injectable()
 export class EventService {
@@ -14,46 +14,39 @@ export class EventService {
   ) {}
 
   async createEvent(createEventDto: CreateEventDto) {
-    return await lastValueFrom(
-      this.eventMsaService.send(
-        {
-          cmd: MESSAGE_CMD.CREATE_EVENT,
-        },
-        createEventDto,
-      ),
+    return await sendMsaMessage(
+      this.eventMsaService,
+      MESSAGE_CMD.CREATE_EVENT,
+      createEventDto,
     );
   }
 
   async getEvents() {
-    return await lastValueFrom(
-      this.eventMsaService.send(
-        {
-          cmd: MESSAGE_CMD.GET_EVENTS,
-        },
-        {},
-      ),
+    // TODO 유저면 공개된 이벤트만 조회
+
+    return await sendMsaMessage(
+      this.eventMsaService,
+      MESSAGE_CMD.GET_EVENTS,
+      {},
     );
   }
 
   async getEvent(eventId: string) {
-    return await lastValueFrom(
-      this.eventMsaService.send(
-        {
-          cmd: MESSAGE_CMD.GET_EVENT,
-        },
-        { eventId },
-      ),
-    );
+    // TODO 유저면 공개된 이벤트만 조회
+
+    return await sendMsaMessage(this.eventMsaService, MESSAGE_CMD.GET_EVENT, {
+      eventId,
+    });
   }
 
   async addEventReward(eventId: string, dto: AddEventRewardDto) {
-    return await lastValueFrom(
-      this.eventMsaService.send(
-        {
-          cmd: MESSAGE_CMD.ADD_EVENT_REWARD,
-        },
-        { ...dto, eventId },
-      ),
+    return await sendMsaMessage(
+      this.eventMsaService,
+      MESSAGE_CMD.ADD_EVENT_REWARD,
+      {
+        ...dto,
+        eventId,
+      },
     );
   }
 }
