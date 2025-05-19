@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { UserRegisterDto } from '../user/dto/user-register.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { MessagePattern, Payload } from '@nestjs/microservices';
+import { LoginDto } from './dto/login.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -29,11 +30,8 @@ export class AuthController {
   @MessagePattern({
     cmd: 'login',
   })
-  async msgLogin(@Payload() userRegisterDto: UserRegisterDto) {
-    return await this.authService.login(
-      userRegisterDto.username,
-      userRegisterDto.password,
-    );
+  async msgLogin(@Payload() loginDto: LoginDto) {
+    return await this.authService.login(loginDto);
   }
 
   @MessagePattern({

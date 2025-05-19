@@ -24,7 +24,7 @@ export class AddEventRewardDto {
   @IsNotEmpty()
   conditionType: ConditionType;
 
-  conditionParams: any;
+  conditionParams?: any;
 
   @IsString()
   @IsNotEmpty()

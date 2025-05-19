@@ -7,6 +7,7 @@ import * as bcrypt from 'bcrypt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserLoginHistory } from '../user/entity/user-login-history.entity';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -18,11 +19,11 @@ export class AuthService {
     private readonly userLoginHistoryModel: Model<UserLoginHistory>,
   ) {}
 
-  async login(username: string, password: string) {
-    const user = await this.userService.findOneByUsername(username);
+  async login(loginDto: LoginDto) {
+    const user = await this.userService.findOneByUsername(loginDto.username);
 
     if (user) {
-      const isPassed = await bcrypt.compare(password, user.password);
+      const isPassed = await bcrypt.compare(loginDto.password, user.password);
       if (isPassed) {
         await this.userLoginHistoryModel.create({
           userId: user._id,
