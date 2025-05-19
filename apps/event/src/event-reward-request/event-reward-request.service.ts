@@ -73,9 +73,9 @@ export class EventRewardRequestService {
       eventId,
       rewardId,
     });
-    if (alreadyRequested) {
-      throw new BadRequestException('이미 요청한 이벤트 보상입니다.');
-    }
+    // if (alreadyRequested) {
+    //   throw new BadRequestException('이미 요청한 이벤트 보상입니다.');
+    // }
 
     if (reward.isAuto) {
       const isEligible = await this.checkConditionService.check(
