@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 
 @Schema()
 export class UserLoginHistory extends Document {
-  @Prop({ required: true })
+  @Prop({ required: true, index: true })
   userId: string;
 
   @Prop({ default: Date.now, required: true })
