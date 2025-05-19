@@ -7,6 +7,8 @@ import { UserUpdateRoleDto } from './dto/user-update-role.dto';
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import { UserLoginHistory } from './entity/user-login-history.entity';
+import { GetUserLoginDatesByPeriodDto } from './dto/get-user-login-dates-by-period.dto';
+import { GetUserLastLoginDateDto } from './dto/get-user-last-login-date.dto';
 
 @Injectable()
 export class UserService {
@@ -56,9 +58,21 @@ export class UserService {
     );
   }
 
-  async getUserHistories(userId: string) {
+  async getUserLoginDatesByPeriod(dto: GetUserLoginDatesByPeriodDto) {
     return this.userLoginHistoryModel.find({
-      userId,
+      userId: dto.userId,
+      createdAt: {
+        $gte: dto.startDate,
+        $lte: dto.endDate,
+      },
     });
+  }
+
+  async getUserLastLoginDateDto(dto: GetUserLastLoginDateDto) {
+    return this.userLoginHistoryModel
+      .findOne({
+        userId: dto.userId,
+      })
+      .sort({ _id: -1 });
   }
 }

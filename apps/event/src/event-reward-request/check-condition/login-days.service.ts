@@ -1,20 +1,25 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ICheckCondition } from './check-condition.service';
+import { lastValueFrom } from 'rxjs';
+import { ClientProxy } from '@nestjs/microservices';
+import { Event } from '../../event/entity/event.entity';
 
 @Injectable()
 export class LoginDaysService implements ICheckCondition {
-  async getData() {
-    /*
-    이벤트 기간 조회
-    const userLoginHistories = await lastValueFrom(
+  constructor(
+    @Inject('AUTH_SERVICE')
+    private readonly authMsaService: ClientProxy,
+  ) {}
+
+  async getData(userId: string, event: Event): Promise<Date[]> {
+    return await lastValueFrom(
       this.authMsaService.send(
         {
-          cmd: 'get-user-histories',
+          cmd: 'get-user-login-dates-by-period',
         },
-        { userId },
+        { userId, startDate: event.startDate, endDate: event.endDate },
       ),
     );
-     */
   }
 
   check(

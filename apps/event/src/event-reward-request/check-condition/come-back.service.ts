@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ICheckCondition } from './check-condition.service';
 import { ClientProxy } from '@nestjs/microservices';
+import { lastValueFrom } from 'rxjs';
 
 @Injectable()
 export class ComeBackService implements ICheckCondition {
@@ -9,8 +10,10 @@ export class ComeBackService implements ICheckCondition {
     private readonly authMsaService: ClientProxy,
   ) {}
 
-  async getData() {
-    // TODO 마지막 로그인 날짜 조회
+  async getData(userId: string): Promise<Date> {
+    return await lastValueFrom(
+      this.authMsaService.send({ cmd: 'get-user-last-login-date' }, { userId }),
+    );
   }
 
   check(lastLoginDate: Date, conditionParams: { days: number }): boolean {

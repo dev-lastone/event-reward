@@ -3,9 +3,10 @@ import { ComeBackService } from './come-back.service';
 import { LoginDaysService } from './login-days.service';
 import { ContinuousLoginDaysService } from './continuouse-login-days.service';
 import { ConditionType, Reward } from '../../event/entity/reward.entity';
+import { Event } from '../../event/entity/event.entity';
 
 export interface ICheckCondition {
-  getData(userId: string): Promise<any>;
+  getData(userId: string, event?: Event): Promise<any>;
   check(data: any, conditionParams: any): boolean;
 }
 
@@ -17,9 +18,9 @@ export class CheckConditionService {
     private readonly continuousLoginDaysService: ContinuousLoginDaysService,
   ) {}
 
-  async check(userId: string, reward: Reward) {
+  async check(userId: string, event: Event, reward: Reward) {
     const service = this.#getService(reward.conditionType);
-    const data = await service.getData(userId);
+    const data = await service.getData(userId, event);
     return service.check(data, reward.conditionParams);
   }
 
