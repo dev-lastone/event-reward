@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -49,6 +50,8 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
       ],
       isGlobal: true,
     }),
+
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

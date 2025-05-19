@@ -17,6 +17,7 @@ import { Roles } from '../decorator/roles.decorator';
 import { UserRole } from '../user/entity/user.entity';
 import { RolesGuard } from '../guard/roles.guard';
 import { UpdateRoleDto } from './dto/update-role.dto';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller('auth')
 export class AuthController {
@@ -27,7 +28,16 @@ export class AuthController {
   })
   @Post('register-admin')
   async registerAdmin(@Body() userRegisterDto: UserRegisterDto) {
+    return await this.authService.registerAdmin(userRegisterDto);
+  }
+
+  @MessagePattern({
+    cmd: 'register-admin',
+  })
+  async msgRegisterAdmin(@Payload() userRegisterDto: UserRegisterDto) {
     await this.authService.registerAdmin(userRegisterDto);
+
+    return true;
   }
 
   @ApiOperation({
