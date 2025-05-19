@@ -6,6 +6,7 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import { GetEventDto } from './dto/get-event.dto';
 import { MESSAGE_CMD } from 'common/const/message-cmd';
 import { RpcInterceptor } from 'common/interceptor/rpc.interceptor';
+import { UpdateEventStatusDto } from './dto/update-event-status.dto';
 
 @Controller('events')
 export class EventController {
@@ -35,7 +36,13 @@ export class EventController {
     return await this.eventService.getEvent(dto.eventId);
   }
 
-  // TODO 이벤트 상태 변경
+  @MessagePattern({
+    cmd: MESSAGE_CMD.UPDATE_EVENT_STATUS,
+  })
+  @UseInterceptors(RpcInterceptor)
+  async updateEventStatus(@Payload() dto: UpdateEventStatusDto) {
+    return await this.eventService.updateEventStatus(dto);
+  }
 
   @MessagePattern({
     cmd: MESSAGE_CMD.ADD_EVENT_REWARD,
