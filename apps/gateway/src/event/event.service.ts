@@ -6,6 +6,7 @@ import { MSA_SERVICE } from 'common/const/msa-service';
 import { MESSAGE_CMD } from 'common/const/message-cmd';
 import { sendMsaMessage } from 'common/util/send-msa-message';
 import { UpdateEventStatusDto } from './dto/update-event-status.dto';
+import { UserRole } from '../../../auth/src/user/entity/user.entity';
 
 @Injectable()
 export class EventService {
@@ -22,21 +23,16 @@ export class EventService {
     );
   }
 
-  async getEvents() {
-    // TODO 유저면 공개된 이벤트만 조회
-
-    return await sendMsaMessage(
-      this.eventMsaService,
-      MESSAGE_CMD.GET_EVENTS,
-      {},
-    );
+  async getEvents(role: UserRole) {
+    return await sendMsaMessage(this.eventMsaService, MESSAGE_CMD.GET_EVENTS, {
+      role,
+    });
   }
 
-  async getEvent(eventId: string) {
-    // TODO 유저면 공개된 이벤트만 조회
-
+  async getEvent(eventId: string, role: UserRole) {
     return await sendMsaMessage(this.eventMsaService, MESSAGE_CMD.GET_EVENT, {
       eventId,
+      role,
     });
   }
 
