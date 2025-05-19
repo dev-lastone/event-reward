@@ -22,8 +22,11 @@ export class ComeBackService implements ICheckCondition {
     const { days } = conditionParams;
 
     const now = new Date();
+    const prevDate = new Date(lastLoginDate);
     const diffDays =
-      (now.getTime() - lastLoginDate.getTime()) / (1000 * 60 * 60 * 24);
+      (now.getFullYear() - prevDate.getFullYear()) * 365 +
+      (now.getMonth() - prevDate.getMonth()) * 30 +
+      (now.getDate() - prevDate.getDate());
 
     return diffDays >= days;
   }
