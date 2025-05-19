@@ -27,7 +27,7 @@ describe('LoginDaysService', () => {
   });
 
   it('fail', () => {
-    const userLoginHistories = [{ date: '2023-10-01' }, { date: '2023-10-02' }];
+    const userLoginHistories = [new Date('2023-10-01'), new Date('2023-10-02')];
 
     const result = service.check(userLoginHistories, { days: 3 });
 
@@ -36,9 +36,9 @@ describe('LoginDaysService', () => {
 
   it('success', () => {
     const userLoginHistories = [
-      { date: '2023-10-01' },
-      { date: '2023-10-02' },
-      { date: '2023-10-03' },
+      new Date('2023-10-01'),
+      new Date('2023-10-02'),
+      new Date('2023-10-03'),
     ];
     const result = service.check(userLoginHistories, { days: 3 });
 
