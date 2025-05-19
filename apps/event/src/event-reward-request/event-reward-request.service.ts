@@ -77,7 +77,11 @@ export class EventRewardRequestService {
     }
 
     if (reward.isAuto) {
-      const isEligible = await this.checkConditionService.check(userId, reward);
+      const isEligible = await this.checkConditionService.check(
+        userId,
+        event,
+        reward,
+      );
 
       await this.eventRewardRequestModel.create({
         userId,
