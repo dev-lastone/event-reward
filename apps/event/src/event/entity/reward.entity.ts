@@ -40,6 +40,12 @@ export class Reward {
 
   @Prop()
   description?: string;
+
+  @Prop({ default: Date.now, required: true })
+  createdAt: Date;
+
+  @Prop({ default: Date.now, required: true })
+  updatedAt: Date;
 }
 
 export const RewardSchema = SchemaFactory.createForClass(Reward);
