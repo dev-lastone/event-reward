@@ -12,6 +12,7 @@ export enum ConditionType {
   CONTINUOUS_LOGIN_DAYS = 'CONTINUOUS_LOGIN_DAYS', // 최대 연속 출석 체크
   COME_BACK = 'COME_BACK', // 복귀유저
   LOTTERY = 'LOTTERY', // 추첨
+  FRIEND_INVITATION = 'FRIEND_INVITATION', // 친구 초대
 }
 
 @Schema()
