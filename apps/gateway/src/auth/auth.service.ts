@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { RegisterDto } from './dto/register.dto';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
+import { UpdateAuthRoleDto } from './dto/update-auth-role.dto';
 
 @Injectable()
 export class AuthService {
@@ -41,6 +42,21 @@ export class AuthService {
           cmd: 'login',
         },
         user,
+      ),
+    );
+    console.log(res);
+  }
+
+  async updateAuthRole(username: string, dto: UpdateAuthRoleDto) {
+    const res = await lastValueFrom(
+      this.authMsaService.send(
+        {
+          cmd: 'update-auth-role',
+        },
+        {
+          username,
+          role: dto.role,
+        },
       ),
     );
     console.log(res);

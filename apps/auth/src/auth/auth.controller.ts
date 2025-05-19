@@ -77,4 +77,13 @@ export class AuthController {
       role: updateRoleDto.role,
     });
   }
+
+  @MessagePattern({
+    cmd: 'update-auth-role',
+  })
+  async msgUpdateAuthRole(@Payload() updateRoleDto: UpdateRoleDto) {
+    await this.authService.updateRole(updateRoleDto);
+
+    return true;
+  }
 }
