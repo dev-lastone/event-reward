@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { lastValueFrom } from 'rxjs';
 import { RequestEventRewardDto } from './dto/request-event-reward.dto';
+import { JwtPayload } from 'common/type/jwt-payload';
 
 @Injectable()
 export class EventRewardRequestService {
@@ -24,7 +25,7 @@ export class EventRewardRequestService {
     );
   }
 
-  async getEventRewardRequests(jwtPayload: any) {
+  async getEventRewardRequests(jwtPayload: JwtPayload) {
     return await lastValueFrom(
       this.eventMsaService.send(
         {
