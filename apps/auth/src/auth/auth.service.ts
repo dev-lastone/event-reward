@@ -43,11 +43,11 @@ export class AuthService {
   }
 
   async registerAdmin(userRegisterDto: UserRegisterDto) {
-    await this.userService.registerAdmin(userRegisterDto);
+    return await this.userService.registerAdmin(userRegisterDto);
   }
 
   async register(userRegisterDto: UserRegisterDto) {
-    await this.userService.register(userRegisterDto);
+    return await this.userService.register(userRegisterDto);
   }
 
   async updateRole(userUpdateRoleDto: UserUpdateRoleDto) {

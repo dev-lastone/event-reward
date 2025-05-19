@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User, UserRole } from './entity/user.entity';
@@ -31,16 +31,29 @@ export class UserService {
   }
 
   async #register(userRegisterDto: UserRegisterDto, role?: UserRole) {
+    const existingUser = await this.userModel.findOne({
+      username: userRegisterDto.username,
+    });
+    if (existingUser) {
+      throw new BadRequestException('User already exists');
+    }
+
     const hashedPassword = await bcrypt.hash(
       userRegisterDto.password,
       this.configService.get<number>('HASH_ROUNDS'),
     );
 
-    return this.userModel.create({
+    const createUser = await this.userModel.create({
       username: userRegisterDto.username,
       password: hashedPassword,
       role: role || UserRole.USER,
     });
+
+    return {
+      _id: createUser._id,
+      username: createUser.username,
+      role: createUser.role,
+    };
   }
 
   async findOneByUsername(username: string) {
@@ -48,9 +61,10 @@ export class UserService {
   }
 
   async updateRole(userUpdateRoleDto: UserUpdateRoleDto) {
+    console.log(userUpdateRoleDto);
     await this.userModel.updateOne(
       {
-        username: userUpdateRoleDto.username,
+        _id: userUpdateRoleDto.userId,
       },
       {
         role: userUpdateRoleDto.role,
