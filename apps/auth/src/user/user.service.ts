@@ -61,7 +61,6 @@ export class UserService {
   }
 
   async updateRole(userUpdateRoleDto: UserUpdateRoleDto) {
-    console.log(userUpdateRoleDto);
     await this.userModel.updateOne(
       {
         _id: userUpdateRoleDto.userId,
