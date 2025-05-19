@@ -3,12 +3,12 @@ import { AuthService } from './auth.service';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { RegisterDto } from './dto/register.dto';
 import { LocalAuthGuard } from '../guard/local-auth.guard';
-import { LoginDto } from '../../../auth/src/auth/dto/login.dto';
 import { UpdateAuthRoleDto } from './dto/update-auth-role.dto';
 import { JwtAuthGuard } from '../guard/jwt-auth.guard';
 import { RolesGuard } from '../guard/roles.guard';
 import { Roles } from '../decorator/roles.decorator';
 import { UserRole } from '../../../auth/src/user/entity/user.entity';
+import { LoginDto } from './dto/login.dto';
 
 @Controller('auth')
 export class AuthController {
