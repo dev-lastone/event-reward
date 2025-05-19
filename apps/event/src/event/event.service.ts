@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { Event } from './entity/event.entity';
+import { Event, EventStatus } from './entity/event.entity';
 import { CreateEventDto } from './dto/create-event.dto';
 import { AddEventRewardDto } from './dto/add-event-reward.dto';
 import { Reward } from './entity/reward.entity';
@@ -36,7 +36,7 @@ export class EventService {
       $match: { _id: new Types.ObjectId(dto.eventId) },
     };
     if (dto.role === UserRole.USER) {
-      match.$match['status'] = 'ACTIVE';
+      match.$match['status'] = EventStatus.ACTIVE;
     }
 
     const result = await this.eventModel
