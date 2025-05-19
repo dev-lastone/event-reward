@@ -7,6 +7,7 @@ import { GetEventDto } from './dto/get-event.dto';
 import { MESSAGE_CMD } from 'common/const/message-cmd';
 import { RpcInterceptor } from 'common/interceptor/rpc.interceptor';
 import { UpdateEventStatusDto } from './dto/update-event-status.dto';
+import { GetEventsDto } from './dto/get-events.dto';
 
 @Controller('events')
 export class EventController {
@@ -24,8 +25,8 @@ export class EventController {
     cmd: MESSAGE_CMD.GET_EVENTS,
   })
   @UseInterceptors(RpcInterceptor)
-  async msgGetEvents() {
-    return await this.eventService.getEvents();
+  async msgGetEvents(@Payload() dto: GetEventsDto) {
+    return await this.eventService.getEvents(dto);
   }
 
   @MessagePattern({
@@ -33,7 +34,7 @@ export class EventController {
   })
   @UseInterceptors(RpcInterceptor)
   async msgGetEvent(@Payload() dto: GetEventDto) {
-    return await this.eventService.getEvent(dto.eventId);
+    return await this.eventService.getEvent(dto);
   }
 
   @MessagePattern({

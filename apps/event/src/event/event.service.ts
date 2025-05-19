@@ -6,6 +6,9 @@ import { CreateEventDto } from './dto/create-event.dto';
 import { AddEventRewardDto } from './dto/add-event-reward.dto';
 import { Reward } from './entity/reward.entity';
 import { UpdateEventStatusDto } from './dto/update-event-status.dto';
+import { UserRole } from '../../../auth/src/user/entity/user.entity';
+import { GetEventsDto } from './dto/get-events.dto';
+import { GetEventDto } from './dto/get-event.dto';
 
 @Injectable()
 export class EventService {
@@ -21,16 +24,24 @@ export class EventService {
     return this.eventModel.create({ ...createEventDto });
   }
 
-  async getEvents() {
+  async getEvents(dto: GetEventsDto) {
+    if (dto.role === UserRole.USER) {
+      return this.eventModel.find({ status: 'ACTIVE' });
+    }
     return this.eventModel.find();
   }
 
-  async getEvent(_id: string) {
+  async getEvent(dto: GetEventDto) {
+    const match = {
+      $match: { _id: new Types.ObjectId(dto.eventId) },
+    };
+    if (dto.role === UserRole.USER) {
+      match.$match['status'] = 'ACTIVE';
+    }
+
     const result = await this.eventModel
       .aggregate([
-        {
-          $match: { _id: new Types.ObjectId(_id) },
-        },
+        match,
         {
           $lookup: {
             from: 'rewards',

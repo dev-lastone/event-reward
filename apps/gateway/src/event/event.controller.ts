@@ -16,6 +16,8 @@ import { Roles } from '../decorator/roles.decorator';
 import { UserRole } from '../../../auth/src/user/entity/user.entity';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventStatusDto } from './dto/update-event-status.dto';
+import { User } from '../decorator/user.decorator';
+import { JwtPayload } from 'common/type/jwt-payload';
 
 @Controller('events')
 export class EventController {
@@ -32,15 +34,15 @@ export class EventController {
   @ApiBearerAuth('jwt')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get()
-  async getEvents() {
-    return await this.eventService.getEvents();
+  async getEvents(@User() user: JwtPayload) {
+    return await this.eventService.getEvents(user.role);
   }
 
   @ApiBearerAuth('jwt')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Get(':eventId')
-  async getEvent(@Param('eventId') eventId: string) {
-    return await this.eventService.getEvent(eventId);
+  async getEvent(@Param('eventId') eventId: string, @User() user: JwtPayload) {
+    return await this.eventService.getEvent(eventId, user.role);
   }
 
   @ApiOperation({
