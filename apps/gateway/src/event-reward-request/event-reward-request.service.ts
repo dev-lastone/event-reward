@@ -4,6 +4,7 @@ import { lastValueFrom } from 'rxjs';
 import { RequestEventRewardDto } from './dto/request-event-reward.dto';
 import { JwtPayload } from 'common/type/jwt-payload';
 import { MSA_SERVICE } from 'common/const/msa-service';
+import { MESSAGE_CMD } from 'common/const/message-cmd';
 
 @Injectable()
 export class EventRewardRequestService {
@@ -19,7 +20,7 @@ export class EventRewardRequestService {
     return await lastValueFrom(
       this.eventMsaService.send(
         {
-          cmd: 'request-event-reward',
+          cmd: MESSAGE_CMD.REQUEST_EVENT_REWARD,
         },
         { ...requestEventRewardDto, userId },
       ),
@@ -30,7 +31,7 @@ export class EventRewardRequestService {
     return await lastValueFrom(
       this.eventMsaService.send(
         {
-          cmd: 'get-event-reward-requests',
+          cmd: MESSAGE_CMD.GET_EVENT_REWARD_REQUESTS,
         },
         jwtPayload,
       ),

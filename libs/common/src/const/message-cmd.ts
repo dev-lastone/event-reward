@@ -1,7 +1,14 @@
-export const MessageCmd = {
+export const MESSAGE_CMD = {
   REGISTER_ADMIN: 'register-admin',
   REGISTER_USER: 'register-user',
   LOGIN: 'login',
   UPDATE_AUTH_ROLE: 'update-auth-role',
-  GET_USER: 'get-user',
+  GET_USER_LOGIN_DATES_BY_PERIOD: 'get-user-login-dates-by-period',
+  GET_USER_LAST_LOGIN_DATE: 'get-user-last-login-date',
+  CREATE_EVENT: 'create-event',
+  GET_EVENTS: 'get-events',
+  GET_EVENT: 'get-event',
+  ADD_EVENT_REWARD: 'add-event-reward',
+  REQUEST_EVENT_REWARD: 'request-event-reward',
+  GET_EVENT_REWARD_REQUESTS: 'get-event-reward-requests',
 };

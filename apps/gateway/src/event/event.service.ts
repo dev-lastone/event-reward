@@ -4,6 +4,7 @@ import { lastValueFrom } from 'rxjs';
 import { CreateEventDto } from '../../../event/src/event/dto/create-event.dto';
 import { AddEventRewardDto } from './dto/add-event-reward.dto';
 import { MSA_SERVICE } from 'common/const/msa-service';
+import { MESSAGE_CMD } from 'common/const/message-cmd';
 
 @Injectable()
 export class EventService {
@@ -16,7 +17,7 @@ export class EventService {
     return await lastValueFrom(
       this.eventMsaService.send(
         {
-          cmd: 'create-event',
+          cmd: MESSAGE_CMD.CREATE_EVENT,
         },
         createEventDto,
       ),
@@ -27,7 +28,7 @@ export class EventService {
     return await lastValueFrom(
       this.eventMsaService.send(
         {
-          cmd: 'get-events',
+          cmd: MESSAGE_CMD.GET_EVENTS,
         },
         {},
       ),
@@ -38,7 +39,7 @@ export class EventService {
     return await lastValueFrom(
       this.eventMsaService.send(
         {
-          cmd: 'get-event',
+          cmd: MESSAGE_CMD.GET_EVENT,
         },
         { eventId },
       ),
@@ -49,7 +50,7 @@ export class EventService {
     return await lastValueFrom(
       this.eventMsaService.send(
         {
-          cmd: 'add-event-reward',
+          cmd: MESSAGE_CMD.ADD_EVENT_REWARD,
         },
         { ...dto, eventId },
       ),

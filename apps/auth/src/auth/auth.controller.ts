@@ -4,13 +4,14 @@ import { UserRegisterDto } from '../user/dto/user-register.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { LoginDto } from './dto/login.dto';
+import { MESSAGE_CMD } from 'common/const/message-cmd';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @MessagePattern({
-    cmd: 'register-admin',
+    cmd: MESSAGE_CMD.REGISTER_ADMIN,
   })
   async msgRegisterAdmin(@Payload() userRegisterDto: UserRegisterDto) {
     await this.authService.registerAdmin(userRegisterDto);
@@ -19,7 +20,7 @@ export class AuthController {
   }
 
   @MessagePattern({
-    cmd: 'register-user',
+    cmd: MESSAGE_CMD.REGISTER_USER,
   })
   async msgRegister(@Payload() userRegisterDto: UserRegisterDto) {
     await this.authService.register(userRegisterDto);
@@ -28,14 +29,14 @@ export class AuthController {
   }
 
   @MessagePattern({
-    cmd: 'login',
+    cmd: MESSAGE_CMD.LOGIN,
   })
   async msgLogin(@Payload() loginDto: LoginDto) {
     return await this.authService.login(loginDto);
   }
 
   @MessagePattern({
-    cmd: 'update-auth-role',
+    cmd: MESSAGE_CMD.UPDATE_AUTH_ROLE,
   })
   async msgUpdateAuthRole(@Payload() updateRoleDto: UpdateRoleDto) {
     await this.authService.updateRole(updateRoleDto);

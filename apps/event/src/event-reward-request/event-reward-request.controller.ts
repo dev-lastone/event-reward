@@ -1,8 +1,9 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { EventRewardRequestService } from './event-reward-request.service';
 import { RequestEventRewardDto } from './dto/request-event-reward.dto';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { JwtPayload } from 'common/type/jwt-payload';
+import { MESSAGE_CMD } from 'common/const/message-cmd';
 
 @Controller('event-reward-requests')
 export class EventRewardRequestController {
@@ -10,17 +11,8 @@ export class EventRewardRequestController {
     private readonly eventRewardRequestService: EventRewardRequestService,
   ) {}
 
-  @Post()
-  async requestEventReward(
-    @Body() requestEventRewardDto: RequestEventRewardDto,
-  ) {
-    return await this.eventRewardRequestService.requestEventReward(
-      requestEventRewardDto,
-    );
-  }
-
   @MessagePattern({
-    cmd: 'request-event-reward',
+    cmd: MESSAGE_CMD.REQUEST_EVENT_REWARD,
   })
   async msgRequestEventReward(
     @Payload() requestEventRewardDto: RequestEventRewardDto,
@@ -31,7 +23,7 @@ export class EventRewardRequestController {
   }
 
   @MessagePattern({
-    cmd: 'get-event-reward-requests',
+    cmd: MESSAGE_CMD.GET_EVENT_REWARD_REQUESTS,
   })
   async msgGetEventRewardRequests(@Payload() jwtPayload: JwtPayload) {
     return await this.eventRewardRequestService.getEventRewardRequests(
