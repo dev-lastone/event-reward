@@ -1,6 +1,35 @@
 version: '3.1'
 
 services:
+  gateway:
+    build:
+      context: .
+      dockerfile: ./apps/gateway/Dockerfile
+    command: pnpm run start:dev gateway
+    env_file:
+      - ./apps/gateway/.env
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+  auth:
+    build:
+      context: .
+      dockerfile: ./apps/auth/Dockerfile
+    command: pnpm run start:dev auth
+    depends_on:
+      mongo_user:
+        condition: service_healthy
+    env_file:
+      - ./apps/auth/.env
+    ports:
+      - '3001:3000'
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
   mongo_user:
     image: mongo:7
     environment:
@@ -16,6 +45,22 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+
+  event:
+    build:
+      context: .
+      dockerfile: ./apps/event/Dockerfile
+    command: pnpm run start:dev event
+    depends_on:
+      mongo_event:
+        condition: service_healthy
+    env_file:
+      - ./apps/event/.env
+    ports:
+      - '3002:3000'
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
 
   mongo_event:
     image: mongo:7
