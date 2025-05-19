@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { EventRewardRequestService } from './event-reward-request.service';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../guard/jwt-auth.guard';
@@ -6,6 +6,8 @@ import { RolesGuard } from '../guard/roles.guard';
 import { Roles } from '../decorator/roles.decorator';
 import { UserRole } from '../../../auth/src/user/entity/user.entity';
 import { RequestEventRewardDto } from './dto/request-event-reward.dto';
+import { User } from '../decorator/user.decorator';
+import { JwtPayload } from 'common/type/jwt-payload';
 
 @Controller('event-reward-requests')
 export class EventRewardRequestController {
@@ -21,11 +23,11 @@ export class EventRewardRequestController {
   @Roles(UserRole.USER)
   @Post()
   async requestEventReward(
-    @Req() req,
+    @User() user: JwtPayload,
     @Body() requestEventRewardDto: RequestEventRewardDto,
   ) {
     return await this.eventRewardRequestService.requestEventReward(
-      req.user._id,
+      user._id,
       requestEventRewardDto,
     );
   }
@@ -36,9 +38,7 @@ export class EventRewardRequestController {
   @ApiBearerAuth('jwt')
   @UseGuards(JwtAuthGuard)
   @Get()
-  async getEventRewardRequests(@Req() req) {
-    return await this.eventRewardRequestService.getEventRewardRequests(
-      req.user,
-    );
+  async getEventRewardRequests(@User() user: JwtPayload) {
+    return await this.eventRewardRequestService.getEventRewardRequests(user);
   }
 }

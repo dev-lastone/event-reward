@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Param, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { RegisterDto } from './dto/register.dto';
@@ -9,6 +9,7 @@ import { RolesGuard } from '../guard/roles.guard';
 import { Roles } from '../decorator/roles.decorator';
 import { UserRole } from '../../../auth/src/user/entity/user.entity';
 import { LoginDto } from './dto/login.dto';
+import { User } from '../decorator/user.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -24,8 +25,11 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Req() req, @Body() loginDto: LoginDto) {
-    return req.user;
+  async login(
+    @User() user: { accessToken: string },
+    @Body() loginDto: LoginDto,
+  ) {
+    return user;
   }
 
   @ApiOperation({
