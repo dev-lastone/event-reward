@@ -5,6 +5,7 @@ import { Event } from './entity/event.entity';
 import { CreateEventDto } from './dto/create-event.dto';
 import { AddEventRewardDto } from './dto/add-event-reward.dto';
 import { Reward } from './entity/reward.entity';
+import { UpdateEventStatusDto } from './dto/update-event-status.dto';
 
 @Injectable()
 export class EventService {
@@ -44,8 +45,14 @@ export class EventService {
     return result[0];
   }
 
+  async updateEventStatus(dto: UpdateEventStatusDto) {
+    return this.eventModel.updateOne(
+      { _id: dto.eventId },
+      { $set: { status: dto.status } },
+    );
+  }
+
   async addEventReward(eventId: string, addEventRewardDto: AddEventRewardDto) {
-    console.log(addEventRewardDto);
     return this.rewardModel.create({ ...addEventRewardDto, eventId });
   }
 }

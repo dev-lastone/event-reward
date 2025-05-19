@@ -5,6 +5,7 @@ import { AddEventRewardDto } from './dto/add-event-reward.dto';
 import { MSA_SERVICE } from 'common/const/msa-service';
 import { MESSAGE_CMD } from 'common/const/message-cmd';
 import { sendMsaMessage } from 'common/util/send-msa-message';
+import { UpdateEventStatusDto } from './dto/update-event-status.dto';
 
 @Injectable()
 export class EventService {
@@ -37,6 +38,20 @@ export class EventService {
     return await sendMsaMessage(this.eventMsaService, MESSAGE_CMD.GET_EVENT, {
       eventId,
     });
+  }
+
+  async updateEventStatus(
+    eventId: string,
+    updateEventStatusDto: UpdateEventStatusDto,
+  ) {
+    return await sendMsaMessage(
+      this.eventMsaService,
+      MESSAGE_CMD.UPDATE_EVENT_STATUS,
+      {
+        eventId,
+        status: updateEventStatusDto.status,
+      },
+    );
   }
 
   async addEventReward(eventId: string, dto: AddEventRewardDto) {

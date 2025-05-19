@@ -1,12 +1,21 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { EventService } from './event.service';
 import { AddEventRewardDto } from './dto/add-event-reward.dto';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../guard/jwt-auth.guard';
 import { RolesGuard } from '../guard/roles.guard';
 import { Roles } from '../decorator/roles.decorator';
 import { UserRole } from '../../../auth/src/user/entity/user.entity';
 import { CreateEventDto } from './dto/create-event.dto';
+import { UpdateEventStatusDto } from './dto/update-event-status.dto';
 
 @Controller('events')
 export class EventController {
@@ -32,6 +41,23 @@ export class EventController {
   @Get(':eventId')
   async getEvent(@Param('eventId') eventId: string) {
     return await this.eventService.getEvent(eventId);
+  }
+
+  @ApiOperation({
+    summary: '이벤트 상태 변경',
+  })
+  @ApiBearerAuth('jwt')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.OPERATOR)
+  @Patch(':eventId/status')
+  async updateEventStatus(
+    @Param('eventId') eventId: string,
+    @Body() updateEventStatusDto: UpdateEventStatusDto,
+  ) {
+    return await this.eventService.updateEventStatus(
+      eventId,
+      updateEventStatusDto,
+    );
   }
 
   @ApiBearerAuth('jwt')
