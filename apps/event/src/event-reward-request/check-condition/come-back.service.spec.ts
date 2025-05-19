@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ComeBackService } from './come-back.service';
+import { MSA_SERVICE } from 'common/const/msa-service';
 
 describe('ComeBackService', () => {
   let service: ComeBackService;
@@ -9,7 +10,7 @@ describe('ComeBackService', () => {
     emit: jest.fn(),
   };
   const mockAuthMsaService = {
-    provide: 'AUTH_SERVICE',
+    provide: MSA_SERVICE.AUTH,
     useValue: mockClientProxy,
   };
 

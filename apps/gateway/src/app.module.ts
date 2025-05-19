@@ -5,6 +5,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AuthModule } from './auth/auth.module';
 import { EventModule } from './event/event.module';
 import { EventRewardRequestModule } from './event-reward-request/event-reward-request.module';
+import { MSA_SERVICE } from 'common/const/msa-service';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { EventRewardRequestModule } from './event-reward-request/event-reward-re
     ClientsModule.registerAsync({
       clients: [
         {
-          name: 'AUTH_SERVICE',
+          name: MSA_SERVICE.AUTH,
           useFactory: (configService: ConfigService) => ({
             transport: Transport.TCP,
             options: {
@@ -37,7 +38,7 @@ import { EventRewardRequestModule } from './event-reward-request/event-reward-re
     ClientsModule.registerAsync({
       clients: [
         {
-          name: 'EVENT_SERVICE',
+          name: MSA_SERVICE.EVENT,
           useFactory: (configService: ConfigService) => ({
             transport: Transport.TCP,
             options: {

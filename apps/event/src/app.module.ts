@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { EventModule } from './event/event.module';
 import { EventRewardRequestModule } from './event-reward-request/event-reward-request.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { MSA_SERVICE } from 'common/const/msa-service';
 
 @Module({
   imports: [
@@ -25,7 +26,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     ClientsModule.registerAsync({
       clients: [
         {
-          name: 'AUTH_SERVICE',
+          name: MSA_SERVICE.AUTH,
           useFactory: (configService: ConfigService) => ({
             transport: Transport.TCP,
             options: {

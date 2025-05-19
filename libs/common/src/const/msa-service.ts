@@ -1,0 +1,4 @@
+export const MSA_SERVICE = {
+  AUTH: 'AUTH_SERVICE',
+  EVENT: 'EVENT_SERVICE',
+};
