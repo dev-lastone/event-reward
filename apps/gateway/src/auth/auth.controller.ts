@@ -31,9 +31,6 @@ export class AuthController {
   @ApiOperation({
     summary: '유저 등록',
   })
-  @ApiBearerAuth('jwt')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserRole.ADMIN)
   @Post('register')
   async registerUser(@Body() registerDto: RegisterDto) {
     await this.authService.registerUser(registerDto);
