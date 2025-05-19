@@ -5,7 +5,7 @@ import { JwtAuthGuard } from '../guard/jwt-auth.guard';
 import { RolesGuard } from '../guard/roles.guard';
 import { Roles } from '../decorator/roles.decorator';
 import { UserRole } from '../../../auth/src/user/entity/user.entity';
-import { RequestEventRewardDto } from '../../../event/src/event-reward-request/dto/request-event-reward.dto';
+import { RequestEventRewardDto } from './dto/request-event-reward.dto';
 
 @Controller('event-reward-requests')
 export class EventRewardRequestController {
@@ -21,9 +21,11 @@ export class EventRewardRequestController {
   @Roles(UserRole.USER)
   @Post()
   async requestEventReward(
+    @Req() req,
     @Body() requestEventRewardDto: RequestEventRewardDto,
   ) {
     return await this.eventRewardRequestService.requestEventReward(
+      req.user._id,
       requestEventRewardDto,
     );
   }
