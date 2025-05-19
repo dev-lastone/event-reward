@@ -24,7 +24,7 @@ export class EventRewardRequest {
   @Prop()
   failureReason?: string;
 
-  @Prop({ default: Date.now })
+  @Prop({ default: Date.now, required: true })
   createdAt: Date;
 }
 
