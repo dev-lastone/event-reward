@@ -4,6 +4,7 @@ import { lastValueFrom } from 'rxjs';
 import { ClientProxy } from '@nestjs/microservices';
 import { Event } from '../../event/entity/event.entity';
 import { MSA_SERVICE } from 'common/const/msa-service';
+import { getSetDates } from 'common/util/get-set-dates';
 
 @Injectable()
 export class LoginDaysService implements ICheckCondition {
@@ -28,8 +29,8 @@ export class LoginDaysService implements ICheckCondition {
     userLoginHistories: Date[],
     conditionParams: { days: number },
   ): boolean {
-    // 예시: 기간 내 로그인 횟수
+    const uniqueDates = getSetDates(userLoginHistories);
     const { days } = conditionParams;
-    return userLoginHistories.length >= days;
+    return uniqueDates.size >= days;
   }
 }
