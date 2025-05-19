@@ -21,4 +21,16 @@ export class AuthService {
     );
     console.log(res);
   }
+
+  async registerUser(registerDto: RegisterDto) {
+    const res = await lastValueFrom(
+      this.userMsaService.send(
+        {
+          cmd: 'register-user',
+        },
+        { ...registerDto },
+      ),
+    );
+    console.log(res);
+  }
 }

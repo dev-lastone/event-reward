@@ -14,4 +14,12 @@ export class AuthController {
   async registerAdmin(@Body() registerDto: RegisterDto) {
     await this.authService.registerAdmin(registerDto);
   }
+
+  @ApiOperation({
+    summary: '유저 등록',
+  })
+  @Post('register')
+  async registerUser(@Body() registerDto: RegisterDto) {
+    await this.authService.registerUser(registerDto);
+  }
 }

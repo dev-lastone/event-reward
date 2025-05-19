@@ -48,6 +48,15 @@ export class AuthController {
     await this.authService.register(userRegisterDto);
   }
 
+  @MessagePattern({
+    cmd: 'register-user',
+  })
+  async msgRegister(@Payload() userRegisterDto: UserRegisterDto) {
+    await this.authService.register(userRegisterDto);
+
+    return true;
+  }
+
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Req() req, @Body() loginDto: LoginDto) {
