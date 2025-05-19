@@ -25,7 +25,7 @@ export class EventService {
   }
 
   async findOne(_id: string) {
-    return await this.eventModel
+    const result = await this.eventModel
       .aggregate([
         {
           $match: { _id: new Types.ObjectId(_id) },
@@ -40,6 +40,8 @@ export class EventService {
         },
       ])
       .exec();
+
+    return result[0];
   }
 
   async addEventReward(eventId: string, addEventRewardDto: AddEventRewardDto) {
