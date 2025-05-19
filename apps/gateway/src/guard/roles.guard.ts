@@ -10,10 +10,6 @@ export class RolesGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const role = this.reflector.get<UserRole>(Roles, context.getHandler());
 
-    if (!Object.values(UserRole).includes(role)) {
-      return false;
-    }
-
     const request = context.switchToHttp().getRequest();
 
     const user = request.user;
@@ -22,12 +18,10 @@ export class RolesGuard implements CanActivate {
       return false;
     }
 
-    // admin 무조건 통과
-    if (user.role === UserRole.ADMIN) {
+    if (!role || user.role === UserRole.ADMIN) {
       return true;
     }
 
-    // 어드민이 아닌 경우 명시된 룰과 동일한 유저만 통과
     return user.role === role;
   }
 }
