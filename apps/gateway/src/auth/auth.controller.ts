@@ -37,7 +37,7 @@ export class AuthController {
   })
   @Post('register')
   async registerUser(@Body() registerDto: RegisterDto) {
-    await this.authService.registerUser(registerDto);
+    return await this.authService.registerUser(registerDto);
   }
 
   @ApiOperation({
