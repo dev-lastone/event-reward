@@ -1,6 +1,5 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { swaggerSetting } from 'libs/common/src/setting';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { validationPipeSetting } from 'common/setting/validation-pipe.setting';
 
@@ -18,9 +17,5 @@ async function bootstrap() {
   });
 
   await app.startAllMicroservices();
-
-  swaggerSetting(app, 'auth');
-
-  await app.listen(process.env.port ?? 3000);
 }
 bootstrap();
